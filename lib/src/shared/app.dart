@@ -20,7 +20,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final settings = ValueNotifier(ThemeSettings(
-    sourceColor: Colors.pink, // Replace this color
+    // Replace this color // sourceColor: Colors.pink,
+    sourceColor: const Color(0xff00cbe6), //0xff379fff), //a8a5ff),
     themeMode: ThemeMode.system,
   ));
   @override
@@ -41,15 +42,18 @@ class _MyAppState extends State<MyApp> {
                 valueListenable: settings,
                 builder: (context, value, _) {
                   // Create theme instance
+                  final theme = ThemeProvider.of(context);
                   return MaterialApp.router(
                     debugShowCheckedModeBanner: false,
                     title: 'Flutter Demo',
                     // Add theme
+                    theme: theme.light(settings.value.sourceColor),
                     // Add dark theme
+                    darkTheme: theme.dark(settings.value.sourceColor),
                     // Add theme mode
+                    themeMode: theme.themeMode(),
                     routeInformationParser: appRouter.routeInformationParser,
-                    routeInformationProvider:
-                        appRouter.routeInformationProvider,
+                    routeInformationProvider: appRouter.routeInformationProvider,
                     routerDelegate: appRouter.routerDelegate,
                     builder: (context, child) {
                       return PlayPauseListener(child: child!);

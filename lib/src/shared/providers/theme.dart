@@ -43,9 +43,14 @@ class ThemeProvider extends InheritedWidget {
     builders: <TargetPlatform, PageTransitionsBuilder>{
       TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
-      TargetPlatform.macOS: NoAnimationPageTransitionsBuilder(),
-      TargetPlatform.windows: NoAnimationPageTransitionsBuilder(),
+      TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+      // TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      // TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      // TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
+      // TargetPlatform.macOS: NoAnimationPageTransitionsBuilder(),
+      // TargetPlatform.windows: NoAnimationPageTransitionsBuilder(),
     },
   );
 
@@ -58,8 +63,7 @@ class ThemeProvider extends InheritedWidget {
   }
 
   Color blend(Color targetColor) {
-    return Color(
-        Blend.harmonize(targetColor.value, settings.value.sourceColor.value));
+    return Color(Blend.harmonize(targetColor.value, settings.value.sourceColor.value));
   }
 
   Color source(Color? target) {
@@ -71,9 +75,8 @@ class ThemeProvider extends InheritedWidget {
   }
 
   ColorScheme colors(Brightness brightness, Color? targetColor) {
-    final dynamicPrimary = brightness == Brightness.light
-        ? lightDynamic?.primary
-        : darkDynamic?.primary;
+    final dynamicPrimary =
+        brightness == Brightness.light ? lightDynamic?.primary : darkDynamic?.primary;
     return ColorScheme.fromSeed(
       seedColor: dynamicPrimary ?? source(targetColor),
       brightness: brightness,
@@ -154,6 +157,7 @@ class ThemeProvider extends InheritedWidget {
     final colorScheme = colors(Brightness.light, targetColor);
     return ThemeData.light().copyWith(
       // Add page transitions
+      pageTransitionsTheme: pageTransitionsTheme,
       colorScheme: colorScheme,
       appBarTheme: appBarTheme(colorScheme),
       cardTheme: cardTheme(),
@@ -172,6 +176,7 @@ class ThemeProvider extends InheritedWidget {
     final colorScheme = colors(Brightness.dark, targetColor);
     return ThemeData.dark().copyWith(
       // Add page transitions
+      pageTransitionsTheme: pageTransitionsTheme,
       colorScheme: colorScheme,
       appBarTheme: appBarTheme(colorScheme),
       cardTheme: cardTheme(),
@@ -192,9 +197,7 @@ class ThemeProvider extends InheritedWidget {
 
   ThemeData theme(BuildContext context, [Color? targetColor]) {
     final brightness = MediaQuery.of(context).platformBrightness;
-    return brightness == Brightness.light
-        ? light(targetColor)
-        : dark(targetColor);
+    return brightness == Brightness.light ? light(targetColor) : dark(targetColor);
   }
 
   static ThemeProvider of(BuildContext context) {

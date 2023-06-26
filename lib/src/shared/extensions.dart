@@ -4,10 +4,14 @@
 
 import 'package:flutter/material.dart';
 // Add Google Fonts Package import
+import 'package:google_fonts/google_fonts.dart';
 
 extension TypographyUtils on BuildContext {
   ThemeData get theme => Theme.of(this);
-  TextTheme get textTheme => theme.textTheme; // Modify this line
+  // Modify this line
+  // TextTheme get textTheme => theme.textTheme; 
+  TextTheme get textTheme => GoogleFonts.montserratTextTheme(theme.textTheme);
+  
   ColorScheme get colors => theme.colorScheme;
   TextStyle? get displayLarge => textTheme.displayLarge?.copyWith(
         color: colors.onSurface,
